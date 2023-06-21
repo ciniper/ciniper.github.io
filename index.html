@@ -1,183 +1,31 @@
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="assets/styles.css">
-  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Ulloa Surf Cam</title>
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7XH8E4LYZ6"></script>
+  <title>Weather Data</title>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-7XH8E4LYZ6');
-  </script>
-
-  <!-- ChatGPT
-  <script src="carousal.js"></script>
-  -->
-
-  <!--<style>
-    .link-container  {
-        border: 5px outset red;
-        background-color: lightblue;
-        text-align: center;
-      }
-  </style> -->
-
-</head>
-
-<body>
-  <div class="root-container">
-    <div class="logo-container">
-      <img class="content-logo-img" src="assets/ulloasurf_logo.png" alt="Ulloa Surf Cam"/>
-    </div>
-
-    <div class="video-container">
-      <!--<iframe width="1280" height="720" src="https://ulloasurf.watch:5443/WebRTCApp/play.html?name=186028858328434972376700" frameborder="0" allowfullscreen></iframe> -->
-
-      <script src="https://unpkg.com/video.js/dist/video.js"></script>
-      <!-- <script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script> -->
-
-      <video-js id="surf-stream" class="vjs-default-skin vjs-big-play-centered" controls preload="auto" width="2560" height="1440">
-          <source
-          src="https://ulloasurf.watch:5443/LiveApp/streams/672582985995651921376905.m3u8"
-          type="application/x-mpegURL">
-      </video-js>
-
-      <script>
-        var player = videojs('surf-stream', {
-          aspectRatio: '16:9',
-          poster: 'assets/poster.jpg',
-          controlBar: { volumePanel: false }
-        });
-        player.play();
-      </script>
+    window.onload = function() {
+      var url = 'https://lightning.ambientweather.net/devices?public.slug=866692f03828b02c8a9b02a27e2eb719';
       
-    </div>
+      fetch(url)
+      .then(response => response.json())
+      .then(json => {
+        // Prepare HTML content
+        var htmlOutput = '';
 
-    <!--
-    <div class="row-container">
-      <a href="https://www.wunderground.com/dashboard/pws/KCASANFR1939">Wunderground Wind/Weather Data Link (for timeseries views!)</a>
-    </div>
-    -->
+        // Add wind data to HTML
+        htmlOutput += "<p>Wind Direction: " + json.data[0].lastData.winddir + "</p>";
+        htmlOutput += "<p>Wind Speed: " + json.data[0].lastData.windspeedmph + "</p>";
+        htmlOutput += "<p>Wind Gust: " + json.data[0].lastData.windgustmph + "</p>";
+        htmlOutput += "<p>Max Daily Gust: " + json.data[0].lastData.maxdailygust + "</p>";
 
-    <div class="ambient-container">
-      <iframe
-        id="ambient-iframe"
-        class="ambient-iframe"
-        src="https://ambientweather.net/devices/public/866692f03828b02c8a9b02a27e2eb719?embed=true"
-      >
-      </iframe>
-    </div>
-
-    <br><br>
-
-    <!-- ChatGPT carousel 
-    <div class="carousel">
-      <img src="assets/surf_chart_46237.jpeg" alt="46237">
-      <img src="assets/surf_chart_46042.jpeg" alt="46042">
-      <img src="assets/surf_chart_46059.jpeg" alt="46059">
-      <img src="assets/surf_chart_46214.jpeg" alt="46214">
-      <button class="prev">Prev</button>
-      <button class="next">Next</button>
-    </div>
-    -->
-
-    <div class="chart-container">
-      <img src="assets/surf_chart_46237.jpeg">
-    </div>
-
-    <br><br>
-    <div class="chart-container">
-      <img src="assets/surf_chart_46042.jpeg">
-    </div>
-
-    <br><br>
-    <div class="chart-container">
-      <img src="assets/surf_chart_46059.jpeg">
-    </div>
-
-    <br><br>
-    <div class="chart-container">
-      <img src="assets/surf_chart_46214.jpeg">
-    </div>
-
-    <div class="link-container">
-      <div>
-        <h1>Other Surf Cams:</h1>
-        <ul class="a">
-          <li>
-            <a href="https://lawtonsurf.watch/" target="_blank">
-              Lawton Surf Cam
-            </a>
-          </li>
-          <li>
-            <a href="https://www.surfline.com/surf-report/ocean-beach-overview/5842041f4e65fad6a77087f8" target="_blank">
-              Surfline OB Overview
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="link-container">
-      <h1>Weather and Buoys:</h1>
-      <ul class="a">
-        <li>
-          <a href="https://www.wunderground.com/dashboard/pws/KCASANFR1939" target="_blank">
-            Wunderground page for the weather station
-          </a>
-        </li>
-        <li>
-          <a href="https://www.ndbc.noaa.gov/station_page.php?station=46026" target="_blank">
-            NOAA SF Buoy
-          </a>
-        </li>
-        <li>
-          <a href="http://www.stormsurfing.com/cgi/display2.cgi?a=t22;b=142" target="_blank">
-            Stormsurf SF Bar buoy (for spectral decomp)
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="link-container">
-      <h1>Forecasts:</h1>
-      <ul class="a">
-        <li>
-          <a href="https://www.surfline.com/surf-forecasts/san-francisco/58581a836630e24c44879010" target="_blank">
-            Surfline San Francisco forecast page
-          </a>
-        </li>
-        <li>
-          <a href="https://forecast.weather.gov/product.php?format=CI&glossary=1&issuedby=MTR&product=AFD&site=MTR&version=1" target="_blank">
-            NOAA Bay Area Forecast discussion
-          </a>
-        </li>
-        <li>
-          <a href="https://www.windy.com/?37.258,-122.679,9" target="_blank">
-            Windy (for wind forecast)
-          </a>
-        </li>
-      </ul>
-    </div>
-
-
-    <!--
-      <div class="link-container">
-      <a href="https://www.windy.com/?37.258,-122.679,9" target="_blank">
-        <span class="link"></span>
-        Windy (for wind forecast)
-      </a>
-    </div>
-  -->
-
-  </div>
-
+        document.getElementById("weatherData").innerHTML = htmlOutput;
+      })
+      .catch(error => console.error('Error:', error));
+    };
+  </script>
+</head>
+<body>
+  <div id="weatherData"></div>
 </body>
 </html>
+
